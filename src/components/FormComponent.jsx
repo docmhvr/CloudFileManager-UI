@@ -78,7 +78,7 @@ function FormComponent() {
   return (
     <div className='input'>
       <Typography variant="h5" gutterBottom>
-        React-AWS Application
+        Cloud File Manager
       </Typography>
       <Typography variant="h6" gutterBottom>
         Input
@@ -91,8 +91,9 @@ function FormComponent() {
       </Typography>
       <Divider />
       <Typography variant="h6" gutterBottom>
-        Status
+        Description
       </Typography>
+      <text>Upload your files to AWS Cloud for easy storage and download whenever wherever!</text>
       {/* Add status updates here */}
     </div>
   );
