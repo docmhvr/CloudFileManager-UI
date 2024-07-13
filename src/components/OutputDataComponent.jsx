@@ -32,15 +32,17 @@ function OutputDataComponent() {
         fetchData();
     }, []);
 
-    const handleDownload = async (filePath) => {
+    const handleDownload = async (id) => {
         try {
-            const response = await axios.get(filePath, {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}?id=${id}`);
+            const { fileUrl, fileName } = response.data;
+            const fileResponse = await axios.get(fileUrl, {
                 responseType: 'blob'
             });
-            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const url = window.URL.createObjectURL(new Blob([fileResponse.data]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', filePath.split('/').pop()); // Get the filename from the URL
+            link.setAttribute('download', fileName); // Get the filename from the URL
             document.body.appendChild(link);
             link.click();
         } 
@@ -76,7 +78,7 @@ function OutputDataComponent() {
                                     <Button 
                                         variant="contained" 
                                         color="primary" 
-                                        onClick={() => handleDownload(row.filePath)}
+                                        onClick={() => handleDownload(row.id)}
                                     >
                                         Download
                                     </Button>

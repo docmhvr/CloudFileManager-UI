@@ -3,10 +3,15 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm install
+        - yarn install
+        - echo "REACT_APP_BUCKET_NAME=$BUCKET_NAME" >> .env
+        - echo "REACT_APP_API_URL=$API_URL" >> .env
+        - echo "REACT_APP_AWS_REGION=$AWS_REGION" >> .env
+        - echo "REACT_APP_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> .env
+        - echo "REACT_APP_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env
     build:
       commands:
-        - npm run build
+        - yarn build
   artifacts:
     baseDirectory: build
     files:
@@ -14,4 +19,3 @@ frontend:
   cache:
     paths:
       - node_modules/**/*
-
