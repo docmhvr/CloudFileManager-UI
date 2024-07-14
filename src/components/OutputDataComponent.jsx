@@ -36,28 +36,28 @@ function OutputDataComponent() {
         fetchData();
     }, []);
 
-    // const handleDownload = async (id) => {
-    //     try {
-    //         const response = await axios.get(filePath, {
-    //             responseType: 'blob',
-    //             headers: {
-    //                 "Content-Type": "text/plain",
-    //                 "Access-Control-Allow-Origin": "*",
-    //                 "Access-Control-Allow-Headers": "*",
-    //                 "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
-    //             },
-    //         });
-    //     const url = window.URL.createObjectURL(new Blob([response.data]));
-    //     const link = document.createElement('a');
-    //     link.href = url;
-    //     link.setAttribute('download', filePath.split('/').pop()); // Get the filename from the URL
-    //     document.body.appendChild(link);
-    //     link.click();
-    //     } 
-    //     catch (error) {
-    //         console.error('Error downloading file:', error);
-    //     }
-    // };
+    const handleDownload = async (id) => {
+        // try {
+        //     const response = await axios.get(filePath, {
+        //         responseType: 'blob',
+        //         headers: {
+        //             "Content-Type": "text/plain",
+        //             "Access-Control-Allow-Origin": "*",
+        //             "Access-Control-Allow-Headers": "*",
+        //             "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+        //         },
+        //     });
+        // const url = window.URL.createObjectURL(new Blob([response.data]));
+        // const link = document.createElement('a');
+        // link.href = url;
+        // link.setAttribute('download', filePath.split('/').pop()); // Get the filename from the URL
+        // document.body.appendChild(link);
+        // link.click();
+        // } 
+        // catch (error) {
+            console.error('Error downloading file:', error);
+        // }
+    };
 
     return (
         <div className='output'>
