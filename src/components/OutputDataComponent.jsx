@@ -55,7 +55,7 @@ function OutputDataComponent() {
         // link.click();
         // } 
         // catch (error) {
-            console.error('Error downloading file:', error);
+            console.error('Error downloading file:');
         // }
     };
 
