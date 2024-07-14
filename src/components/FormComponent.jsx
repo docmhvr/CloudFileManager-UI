@@ -22,27 +22,32 @@ function FormComponent() {
   };
 
   const handleSubmit = async () => {
-    try {
-      const config = {
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
-          },
-      };
+    if (!fileUpload) {
+        console.error("No file selected");
+        return;
+    }
 
-      const response = await axios.post(process.env.REACT_APP_API_URL,{
-            textInput,
-            fileName: fileUpload.name,
-            filePath: fileUpload.name, // Assuming filePath is the file name
-        },
-        config
-      );
-      console.log('Data sent to API Gateway successfully!!', response.data);
-    } 
-    catch (err) {
-      console.error('Error:', err);
+    const data = {
+        textInput,
+        fileName: fileUpload.name,
+        filePath: fileUpload.name, // Assuming filePath is the file name
+    };
+
+    try {
+        const res = await axios({
+            method: "POST",
+            url: process.env.REACT_APP_API_URL,
+            data: data,
+            headers: {
+                "Content-Type": "text/plain",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "*",
+                "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+            },
+        });
+        console.log("Data returned from API:", res);
+    } catch (error) {
+        console.error("Error sending file to DB:", error);
     }
   };
 

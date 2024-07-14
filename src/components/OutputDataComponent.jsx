@@ -16,24 +16,20 @@ function OutputDataComponent() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetching data from the API
                 const config = {
                     headers: {
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Headers': '*',
-                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
+                        "Content-Type": "text/plain",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "*",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
                     },
                 };
 
-                const result = await axios.get(process.env.REACT_APP_API_URL, config);
-
-                // Assuming the API returns an array of items and wrapping in an array if a single item is returned
+                const result = await axios.get(process.env.REACT_APP_API, config);
                 setRows(result.data ? (Array.isArray(result.data) ? result.data : [result.data]) : []);
-            } 
-            catch (error) {
+            } catch (error) {
                 console.error("Failed to fetch data:", error);
-                // Handle error by setting no data
-                setRows([]); 
+                setRows([]);
             }
         };
 
@@ -42,17 +38,21 @@ function OutputDataComponent() {
 
     const handleDownload = async (id) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}?id=${id}`);
-            const { fileUrl, fileName } = response.data;
-            const fileResponse = await axios.get(fileUrl, {
-                responseType: 'blob'
+            const response = await axios.get(filePath, {
+                responseType: 'blob',
+                headers: {
+                    "Content-Type": "text/plain",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+                },
             });
-            const url = window.URL.createObjectURL(new Blob([fileResponse.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', fileName); // Get the filename from the URL
-            document.body.appendChild(link);
-            link.click();
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filePath.split('/').pop()); // Get the filename from the URL
+        document.body.appendChild(link);
+        link.click();
         } 
         catch (error) {
             console.error('Error downloading file:', error);
