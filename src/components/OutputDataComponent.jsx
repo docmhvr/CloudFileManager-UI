@@ -17,7 +17,15 @@ function OutputDataComponent() {
         const fetchData = async () => {
             try {
                 // Fetching data from the API
-                const result = await axios.get(process.env.REACT_APP_API_URL);
+                const config = {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Headers': '*',
+                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
+                    },
+                };
+
+                const result = await axios.get(process.env.REACT_APP_API_URL, config);
 
                 // Assuming the API returns an array of items and wrapping in an array if a single item is returned
                 setRows(result.data ? (Array.isArray(result.data) ? result.data : [result.data]) : []);

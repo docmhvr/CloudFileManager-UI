@@ -22,52 +22,23 @@ function FormComponent() {
   };
 
   const handleSubmit = async () => {
-    const config = {
-      region: process.env.REACT_APP_AWS_REGION,
-      credentials: {
-        accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-      }
-    };
-
-    const client = new S3Client(config);
-
-    const uploadFileToS3 = async (fileUpload) => {
-      const input = {
-        Body: fileUpload,
-        Bucket: process.env.REACT_APP_BUCKET_NAME,
-        Key: fileUpload.name,
-        ContentType: fileUpload.type,
-    };
-
-      try {
-        const command = new PutObjectCommand(input);
-        const resp = await client.send(command);
-        console.log('Upload successful!!', resp.data);
-        return `https://${input.Bucket}.s3.us-west-1.amazonaws.com/${input.Key}`; // Might coz error need to check if doesn't work after testing
-      } 
-      catch (err) {
-        console.error('Upload failed', err);
-        throw err;
-      }
-    };
-
     try {
-      if (!fileUpload) {
-        console.error('No file selected for upload.');
-        return;
-      }
+      const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
+          },
+      };
 
-      const filePath = await uploadFileToS3(fileUpload);
-      console.log(`File uploaded to: ${filePath}`);
-
-      // Call API Gateway to save file path and text input in DynamoDB
-      const response = await axios.post(process.env.REACT_APP_API_URL, {             
-        textInput,
-        fileName: fileUpload.name,
-        filePath,
-      });
-
+      const response = await axios.post(process.env.REACT_APP_API_URL,{
+            textInput,
+            fileName: fileUpload.name,
+            filePath: fileUpload.name, // Assuming filePath is the file name
+        },
+        config
+      );
       console.log('Data sent to API Gateway successfully!!', response.data);
     } 
     catch (err) {
